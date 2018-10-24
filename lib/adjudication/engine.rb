@@ -12,6 +12,10 @@ module Adjudication
       # TODO filter resulting provider data, match it up to claims data by
       # provider NPI (national provider ID), and run the adjudicator.
       # This method should return the processed claims
+
+
+
+
       providercount = provider_data.length
       counter = 0
       filtered_provider_data = []
@@ -27,6 +31,30 @@ module Adjudication
         counter +=1
       end
       puts filtered_provider_data
+      valid_providers = []
+      filtered_provider_data.each do |provider|
+        valid_providers.push(provider["NPI"])
+      end
+      puts claims_data
+      puts
+      puts valid_providers
+
+# check claims for valid provider providers
+
+      puts "--------------------------------------"
+      puts "number of claims sent to be processed: #{claims_data.length}"
+      valid_claims = []
+      claims_data.each do |claim|
+		     if valid_providers.include?(claim["npi"])
+		          	valid_claims.push(claim)
+		     else
+		        $stderr.puts "claim number #{claim["number"]} does not have valid provider"
+		     end
+
+      end
+      		puts "number of claims that will be processed: #{valid_claims.length}"
+          puts valid_claims
+
 
       []
     end
