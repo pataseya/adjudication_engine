@@ -15,20 +15,21 @@ module Adjudication
 
 
 
+# filter provider data to include only valid NPI numbers
 
       providercount = provider_data.length
       counter = 0
       filtered_provider_data = []
       while counter < providercount
         if provider_data[counter]["NPI"] == nil
-          $stderr.puts "Provider #{provider_data[counter]["Last Name"]} rejected due to missing NPI"
+          $stderr.puts " ---------- Provider #{provider_data[counter]["Last Name"]} rejected due to missing NPI."
         elsif
           provider_data[counter]["NPI"].length != 10
-          $stderr.puts "Provider #{provider_data[counter]["Last Name"]} rejected due to NPI too short"
+          $stderr.puts " ---------- Provider #{provider_data[counter]["Last Name"]} rejected due invalid NPI character length."
         else
-        filtered_provider_data.push(provider_data[counter])
+          filtered_provider_data.push(provider_data[counter])
         end
-        counter +=1
+          counter +=1
       end
       puts filtered_provider_data
       valid_providers = []
@@ -39,7 +40,7 @@ module Adjudication
       puts
       puts valid_providers
 
-# check claims for valid provider providers
+# check claims for valid provider NPI numbers and reject any claims that do not have a valid NPI
 
       puts "--------------------------------------"
       puts "number of claims sent to be processed: #{claims_data.length}"
@@ -48,15 +49,19 @@ module Adjudication
 		     if valid_providers.include?(claim["npi"])
 		          	valid_claims.push(claim)
 		     else
-		        $stderr.puts "claim number #{claim["number"]} does not have valid provider"
+		        $stderr.puts "------- claim number #{claim["number"]} does not have valid provider ID and is out of network. I'm sorry but we cannot process this claim. Please contact your administrator. ------"
 		     end
 
       end
       		puts "number of claims that will be processed: #{valid_claims.length}"
-          puts valid_claims
+          @claims_data = valid_claims
 
+          valid_claims.each do |claim|
+            current_claim = Adjudication::Engine::Adjudicator.new
+            processed_claims = current_claim.adjudicate(claim)
 
-      []
+          end
+          []
     end
   end
 end
