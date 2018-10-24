@@ -8,10 +8,12 @@ module Adjudication
     def self.run claims_data
       fetcher = Adjudication::Providers::Fetcher.new
       provider_data = fetcher.provider_data
-
+      puts provider_data
       # TODO filter resulting provider data, match it up to claims data by
       # provider NPI (national provider ID), and run the adjudicator.
       # This method should return the processed claims
+
+
 
       []
     end
