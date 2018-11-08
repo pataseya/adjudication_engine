@@ -24,6 +24,8 @@ module Adjudication
       def procedure_codes
         line_items.map(&:procedure_code)
       end
+
+
     end
   end
 end

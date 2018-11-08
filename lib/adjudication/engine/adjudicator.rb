@@ -12,9 +12,20 @@ module Adjudication
         # TODO implement adjudication rules, and add any processed claims (regardless
         # of status) into the processed_claims attribute.
 
-        #  current_claim = Claim.new(@claims_data[0])
-        #  puts current_claim
-        puts claim 
+
+
+
+    #    current_claim = Claim.new(claim)
+  #      puts current_claim
+
+
+
+
+
+
+
+
+
       end
 
 

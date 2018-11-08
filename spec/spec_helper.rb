@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "adjudication/engine"
+require_relative "../lib/adjudication/providers/provider"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

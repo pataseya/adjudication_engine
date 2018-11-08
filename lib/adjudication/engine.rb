@@ -31,14 +31,18 @@ module Adjudication
         end
           counter +=1
       end
+
+
+      puts " Filtered providers *****************************"
       puts filtered_provider_data
+
+#  create an array of just valid NPI's
+
       valid_providers = []
       filtered_provider_data.each do |provider|
         valid_providers.push(provider["NPI"])
       end
-      puts claims_data
-      puts
-      puts valid_providers
+
 
 # check claims for valid provider NPI numbers and reject any claims that do not have a valid NPI
 
@@ -53,14 +57,20 @@ module Adjudication
 		     end
 
       end
-      		puts "number of claims that will be processed: #{valid_claims.length}"
-          @claims_data = valid_claims
+      puts "number of claims that will be processed: #{valid_claims.length}"
+      @claims_data = valid_claims
 
-          valid_claims.each do |claim|
-            current_claim = Adjudication::Engine::Adjudicator.new
-            processed_claims = current_claim.adjudicate(claim)
 
-          end
+
+
+#calling on the adjudicator to process each line in the claim.
+            processed_claims = Adjudication::Engine::Adjudicator.new
+            @claims_data.each do |claim|
+                current_claim = processed_claims.adjudicate(claim)
+            end
+
+
+
           []
     end
   end
