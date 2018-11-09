@@ -1,7 +1,7 @@
 module Adjudication
   module Providers
     class Provider
-      attr_writer :npi   #shortcut for a getter setter
+      attr_writer :npi, :npi_alert  #shortcut for a getter setter
 
       def initialize(attributes=[])  #this gives a default value if no array is passed
         @last_name = attributes[0]
@@ -17,11 +17,24 @@ module Adjudication
       end
 
       def valid?
-        return false if @npi.nil?   #get the hell out if it's  nil
-        return false if @npi.scan(/\D/).length > 0
+        if @npi.nil?
+          @npi_alert = "NPI is nil"
+          return false
+        elsif @npi.scan(/\D/).length > 0
+          @npi_alert = "NPI not numeric"
+          return false
+        elsif @npi.size != 10
+          @npi_alert = "NPI not 10 digits"
+          return false
+        else
+          @npi.size == 10
+
+        end #get the hell out if it's  nil
+
         #return false if @npi =~ /\D/  #regular expression - returns nil if there are no characters in the string
-        @npi.size == 10
+
       end
+
 
 
     end

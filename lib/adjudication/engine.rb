@@ -13,35 +13,22 @@ module Adjudication
       # provider NPI (national provider ID), and run the adjudicator.
       # This method should return the processed claims
 
-
-
 # filter provider data to include only valid NPI numbers
 
-      providercount = provider_data.length
-      counter = 0
-      filtered_provider_data = []
-      while counter < providercount
-        if provider_data[counter]["NPI"] == nil
-          $stderr.puts " ---------- Provider #{provider_data[counter]["Last Name"]} rejected due to missing NPI."
-        elsif
-          provider_data[counter]["NPI"].length != 10
-          $stderr.puts " ---------- Provider #{provider_data[counter]["Last Name"]} rejected due invalid NPI character length."
-        else
-          filtered_provider_data.push(provider_data[counter])
-        end
-          counter +=1
-      end
-
-
-      puts " Filtered providers *****************************"
-      puts filtered_provider_data
-
-#  create an array of just valid NPI's
-
       valid_providers = []
-      filtered_provider_data.each do |provider|
-        valid_providers.push(provider["NPI"])
+      provider_data.each do |prov|
+        provider = Adjudication::Providers::Provider.new(prov)
+        if @npi.valid?
+          valid_providers.push(provider)
+        else
+          $stderr.puts " ---------- Provider #{@last_name}, NPI of #{@npi} was rejected because #{@npi_alert}."
+        end
       end
+
+
+      puts " Valid Providers: *****************************"
+      puts valid_providers
+
 
 
 # check claims for valid provider NPI numbers and reject any claims that do not have a valid NPI
